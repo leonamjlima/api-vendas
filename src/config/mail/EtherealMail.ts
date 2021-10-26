@@ -1,4 +1,4 @@
-import nodemailer, { createTestAccount } from 'nodemailer';
+import nodemailer from 'nodemailer';
 
 interface ISendMail {
   to: string;
@@ -7,12 +7,7 @@ interface ISendMail {
 
 export default class EtherealMail {
   static async sendMail({ to, body }: ISendMail): Promise<void> {
-    try {
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Tentei fazer isso
-      const account = await nodemailer.createTestAccount();
-    } catch (error) {
-      console.log(error);
-    }
+    const account = await nodemailer.createTestAccount();
 
     const transporter = nodemailer.createTransport({
       host: account.smtp.host,
@@ -22,9 +17,6 @@ export default class EtherealMail {
         user: account.user,
         pass: account.pass,
       },
-      // tls: { Tentei fazer isso
-      //   rejectUnauthorized: false,
-      // },
     });
 
     const message = await transporter.sendMail({
