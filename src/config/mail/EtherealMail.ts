@@ -7,15 +7,14 @@ interface ISendMail {
 
 export default class EtherealMail {
   static async sendMail({ to, body }: ISendMail): Promise<void> {
-    const account = await nodemailer.createTestAccount();
+    // const account = await nodemailer.createTestAccount();
 
     const transporter = nodemailer.createTransport({
-      host: account.smtp.host,
-      port: account.smtp.port,
-      secure: account.smtp.secure,
+      host: 'smtp.mailtrap.io',
+      port: 2525,
       auth: {
-        user: account.user,
-        pass: account.pass,
+        user: '8a8d72c911a2fa',
+        pass: '6920263870ece1',
       },
     });
 
