@@ -1,4 +1,3 @@
-import { template } from 'handlebars';
 import nodemailer from 'nodemailer';
 import handlebarsMainTemplate from './HandlebarsMailTemplate';
 
