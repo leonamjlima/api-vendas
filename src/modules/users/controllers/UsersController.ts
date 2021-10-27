@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import CreateUserService from '../services/CreateUserService';
 import DeleteUserService from '../services/DeleteUserService';
@@ -9,7 +10,8 @@ export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listUsers = new ListUserService();
     const Users = await listUsers.execute();
-    return response.json(Users);
+
+    return response.json(classToClass(Users));
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
@@ -17,13 +19,13 @@ export default class UsersController {
 
     const showUser = new ShowUserService();
     const User = await showUser.execute({ id });
-    return response.json(User);
+
+    return response.json(classToClass(User));
     // return response.json(new ShowUserService().execute({ id }));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
-
     const createUser = new CreateUserService();
 
     const User = await createUser.execute({
@@ -32,7 +34,7 @@ export default class UsersController {
       password,
     });
 
-    return response.json(User);
+    return response.json(classToClass(User));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -48,7 +50,7 @@ export default class UsersController {
       password,
     });
 
-    return response.json(User);
+    return response.json(classToClass(User));
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
