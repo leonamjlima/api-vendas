@@ -1,5 +1,4 @@
 import { CustomersRepository } from '@modules/customers/typeorm/repositories/CustomersRepository';
-import Product from '@modules/products/typeorm/entities/Product';
 import { ProductRepository } from '@modules/products/typeorm/repositories/ProductsRepository';
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
@@ -40,10 +39,14 @@ class CreateOrderService {
       product => !existsProductsIds.includes(product.id),
     );
 
-    if (!checkInexistentProducts.length) {
-      throw new AppError(
-        `Could not find product ${checkInexistentProducts[0].id}`,
-      );
+    try {
+      if (!checkInexistentProducts.length) {
+        throw new AppError(
+          `Could not find product ${checkInexistentProducts[0].id}`,
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
 
     const quantityAvailable = products.filter(
@@ -74,7 +77,7 @@ class CreateOrderService {
     const updatedProductQuantity = order_products.map(product => ({
       id: product.product_id,
       quantity:
-        existsProducts.filter(p => p.id === product.id)[0].quantity -
+        existsProducts.filter(p => p.id === product.product_id)[0].quantity -
         product.quantity,
     }));
 
